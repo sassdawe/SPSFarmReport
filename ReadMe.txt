@@ -1,0 +1,1 @@
+Please refer to this blog https://blogs.technet.microsoft.com/brookswhite/2014/04/02/sps-farm-report/ about usage of this script.
