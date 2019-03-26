@@ -1,5 +1,12 @@
-function global:HandleException([string]$functionName,[System.Exception]$err)
-{
-	$global:exceptionDetails = $global:exceptionDetails + "********* Exception caught:" + $functionName + " , " + $err
-	Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+function global:HandleException {
+    [CmdletBinding()]
+    param (
+        [string]
+        $functionName
+        ,
+        [System.Exception]
+        $err
+    )
+    $script:exceptionDetails = $script:exceptionDetails + "********* Exception caught:" + $functionName + " , " + $err
+    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
 }

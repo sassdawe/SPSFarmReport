@@ -1,25 +1,24 @@
 
-function o14writeSPServiceApplicationPools
-{
-	try
-	{
-		if($global:serviceAppPoolCount -eq 0 ) { return }
-		
-		$global:XMLWriter.WriteStartElement("Service_Application_Pools")
-		$global:SPServiceApplicationPools.GetEnumerator() | ForEach-Object {
-		$serviceAppPoolID = $_.key
-		$serviceAppPoolstr = $_.value
-		
-		$global:XMLWriter.WriteStartElement("Application_Pool")
-		$global:XMLWriter.WriteAttributeString("Id", $serviceAppPoolID)
-		$global:XMLWriter.WriteRaw($serviceAppPoolstr)
-		$global:XMLWriter.WriteEndElement()		
-		}
-		$global:XMLWriter.WriteEndElement()
-	}
-	catch [System.Exception] 
-    {
-		Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+function o14writeSPServiceApplicationPools {
+    [CmdletBinding()]
+    param ()
+    try {
+        if ($script:serviceAppPoolCount -eq 0 ) { return }
+
+        $script:XMLWriter.WriteStartElement("Service_Application_Pools")
+        $script:SPServiceApplicationPools.GetEnumerator() | ForEach-Object {
+            $serviceAppPoolID = $_.key
+            $serviceAppPoolstr = $_.value
+
+            $script:XMLWriter.WriteStartElement("Application_Pool")
+            $script:XMLWriter.WriteAttributeString("Id", $serviceAppPoolID)
+            $script:XMLWriter.WriteRaw($serviceAppPoolstr)
+            $script:XMLWriter.WriteEndElement()
+        }
+        $script:XMLWriter.WriteEndElement()
+    }
+    catch [System.Exception] {
+        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
         global:HandleException("o14writeSPServiceApplicationPools", $_)
     }
 }
