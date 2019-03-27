@@ -1,4 +1,6 @@
-function o16enumSolutions() {
+function o16enumSolutions {
+    [cmdletbinding()]
+    param ()
     try {
         $global:solutionCount = [Microsoft.SharePoint.Administration.SPWebService]::ContentService.Farm.Solutions.Count
         $global:solutionProps = New-Object 'System.String[,]' $global:solutionCount, 6
@@ -10,11 +12,9 @@ function o16enumSolutions() {
             $global:solutionProps[$count, 5] = $solution.Id.ToString()
 
             foreach ($deployedServer in $solution.DeployedServers) {
-                if ($global:solutionProps[$count, 3] -eq $null) {
-                    if ($deployedServer.Address -eq $null)
-                    { $global:solutionProps[$count, 3] = "" }
-                    else
-                    { $global:solutionProps[$count, 3] = $deployedServer.Address }
+                if ($null -eq $global:solutionProps[$count, 3]) {
+                    if ($null -eq $deployedServer.Address) { $global:solutionProps[$count, 3] = "" }
+                    else { $global:solutionProps[$count, 3] = $deployedServer.Address }
                 }
                 else
                 { $global:solutionProps[$count, 3] = $global:solutionProps[$count, 3] + "<br>" + $deployedServer.Address }
