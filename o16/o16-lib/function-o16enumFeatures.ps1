@@ -1,6 +1,8 @@
-function o16enumFeatures() {
+function o16enumFeatures {
+    [cmdletbinding()]
+    param ()
     try {
-        $bindingFlags = [System.Reflection.BindingFlags] “NonPublic,Instance”
+        $bindingFlags = [System.Reflection.BindingFlags] "NonPublic,Instance"
         [Microsoft.SharePoint.Administration.SPFarm] $mySPFarm = [Microsoft.SharePoint.Administration.SPWebService]::ContentService.Farm
         $global:FeatureCount = 0
         $FeatureCount2 = 0
@@ -17,14 +19,17 @@ function o16enumFeatures() {
         #to retrieve the properties
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Farm")) {
-                if ($global:_farmFeatureDefinitions.ContainsKey($FeatureDefinition.DisplayName))
-                { $global:FarmFeatures[$FeatureCount2, 1] = $global:_farmFeatureDefinitions.Get_Item($FeatureDefinition.DisplayName)	}
-                else {	$FarmFeatures[$FeatureCount2, 1] = $FeatureDefinition.DisplayName }
-					
+                if ($global:_farmFeatureDefinitions.ContainsKey($FeatureDefinition.DisplayName)) {
+                    $global:FarmFeatures[$FeatureCount2, 1] = $global:_farmFeatureDefinitions.Get_Item($FeatureDefinition.DisplayName)
+                }
+                else {
+                    $FarmFeatures[$FeatureCount2, 1] = $FeatureDefinition.DisplayName
+                }
+
                 $FarmFeatures[$FeatureCount2, 0] = $FeatureDefinition.Id.ToString()
                 $FarmFeatures[$FeatureCount2, 2] = $FeatureDefinition.SolutionId.ToString()
                 $pi = $FeatureDefinition.GetType().GetProperty("HasActivations", $bindingFlags)
-                $FarmFeatures[$FeatureCount2, 3] = $pi.GetValue($FeatureDefinition, $null).ToString()				
+                $FarmFeatures[$FeatureCount2, 3] = $pi.GetValue($FeatureDefinition, $null).ToString()
                 $FeatureCount2++
             }
         }

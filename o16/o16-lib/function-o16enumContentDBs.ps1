@@ -1,4 +1,6 @@
-function o16enumContentDBs() {
+function o16enumContentDBs {
+    [cmdletbinding()]
+    param ()
     try {
         $DiskSpaceReq = 0.000
         $global:ContentDBProps = new-object 'System.String[,]' $global:totalContentDBCount, 8
@@ -16,25 +18,26 @@ function o16enumContentDBs() {
                 $DiskSpaceReq = [double] $contentDB.DiskSizeRequired / 1048576
                 $global:ContentDBProps[$count, 5] = $DiskSpaceReq.ToString() + " MB"
                 $DBConnectionString = $contentDB.DatabaseConnectionString
-                PSUsing ($sqlConnection = New-Object System.Data.SqlClient.SqlConnection $DBConnectionString) {   
-                    try {      
+                PSUsing ($sqlConnection = New-Object System.Data.SqlClient.SqlConnection $DBConnectionString) {
+                    try {
                         $queryString = "select LockedBy from timerlock with (nolock)"
-                        $sqlCommand = $sqlConnection.CreateCommand()      
-                        $sqlCommand.CommandText = $queryString       
-                        $sqlConnection.Open() | Out-Null      
-                        $reader = $sqlcommand.ExecuteReader() 
+                        $sqlCommand = $sqlConnection.CreateCommand()
+                        $sqlCommand.CommandText = $queryString
+                        $sqlConnection.Open() | Out-Null
+                        $reader = $sqlcommand.ExecuteReader()
                         while ($reader.Read()) {
                             $global:ContentDBProps[$count, 6] = $reader[0].ToString()
                         }
                         $reader.Close()
-                    }    
-                    catch [Exception] {      
-                        Write-Host "Exception while running SQL query." -ForegroundColor Cyan      
-                        Write-Host "$($_.exception)" -ForegroundColor Black      return -1    
                     }
-					
+                    catch [Exception] {
+                        Write-Host "Exception while running SQL query." -ForegroundColor "Cyan"
+                        Write-Host "$($_.exception)" -ForegroundColor "Black"
+                        return -1
+                    }
+
                     $global:ContentDBProps[$count, 7] = $contentDB.NeedsUpgrade.ToString()
-                }            
+                }
 
                 $count = $count + 1
             }

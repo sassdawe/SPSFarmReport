@@ -1,4 +1,6 @@
-function o16enumHealthReport() {
+function o16enumHealthReport{
+    [cmdletbinding()]
+    param ()
     try {
         $site = Get-SPSite $global:adminURL
         $web = $site.RootWeb
@@ -8,13 +10,13 @@ function o16enumHealthReport() {
             $id = $item["ID"]
             $tempstr = $item["Title"] + "||" + $item["Failing Servers"] + "||" + $item["Failing Services"] + "||" + $item["Modified"]
             switch ($item["Severity"]) {
-                "0 - Rule Execution Failure"  
+                "0 - Rule Execution Failure"
                 { $global:HealthReport0.Add($id, $tempstr) }
-                "1 - Error" 
+                "1 - Error"
                 { $global:HealthReport1.Add($id, $tempstr) }
-                "2 - Warning" 
+                "2 - Warning"
                 { $global:HealthReport2.Add($id, $tempstr) }
-                "3 - Information" 
+                "3 - Information"
                 { $global:HealthReport3.Add($id, $tempstr) }
                 default { }
             }
@@ -25,5 +27,5 @@ function o16enumHealthReport() {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
         global:HandleException("o15enumHealthReport", $_)
         return 0
-    } 
+    }
 }

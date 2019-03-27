@@ -1,4 +1,6 @@
-function o16enumProdVersions() {
+function o16enumProdVersions{
+    [cmdletbinding()]
+    param ()
     try {
         $global:serverProducts = new-object 'System.String[,,]' $global:Servernum, $global:_maxProductsonServer, $global:_maxItemsonServer
         $count = $global:Servernum - 1
@@ -6,7 +8,7 @@ function o16enumProdVersions() {
 
         [Microsoft.SharePoint.Administration.SPProductVersions] $versions = [Microsoft.SharePoint.Administration.SPProductVersions]::GetProductVersions()
         $infos = New-Object 'System.Collections.Generic.List[Microsoft.SharePoint.Administration.SPServerProductInfo]' (, $versions.ServerInformation)
-        
+
         foreach ($prodInfo in $infos) {
             $count2 = 0;
             $count3 = 0;
@@ -24,7 +26,7 @@ function o16enumProdVersions() {
                     foreach ($info in $patchableUnitInfoByDisplayName) {
                         $count3++;
                         $version = [Microsoft.SharePoint.Utilities.SPHttpUtility]::HtmlEncode($info.BaseVersionOnServer($prodInfo.ServerId).ToString())
-                        $serverProducts[$count, $count2, $count3] = $info.DisplayName + " : " + $info.LatestPatchOnServer($prodInfo.ServerId).Version.ToString() 
+                        $serverProducts[$count, $count2, $count3] = $info.DisplayName + " : " + $info.LatestPatchOnServer($prodInfo.ServerId).Version.ToString()
                     }
                     $serverProducts[$count, $count2, ($global:_maxItemsonServer - 1)] = $count3.ToString()
                 }
