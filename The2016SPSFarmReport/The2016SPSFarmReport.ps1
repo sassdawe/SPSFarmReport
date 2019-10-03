@@ -21,37 +21,37 @@
 	$isFoundationOnlyInstalled = $false
 
 	# Declaring all string variables
-	$DSN, $confgDbServerName, $confgDbName, $BuildVersion, $systemAccount = "","","","","" | Out-Null
-	$adminURL, $adminDbName, $adminDbServerName, $enterpriseSearchServiceStatus, $enterpriseSearchServiceJobDefs  = "","","","","" | Out-Null
-	$exceptionDetails = "" | Out-Null
+	$null = $DSN, $confgDbServerName, $confgDbName, $BuildVersion, $systemAccount = "","","","",""
+	$null = $adminURL, $adminDbName, $adminDbServerName, $enterpriseSearchServiceStatus, $enterpriseSearchServiceJobDefs  = "","","","",""
+	$null = $exceptionDetails = ""
 
 	# Declaing all integer variables
-	$Servernum, $totalContentDBCount, $WebAppnum, $serviceAppPoolCount, $FeatureCount = 0,0,0,0,0,0,0 | Out-Null
-	$wFeatureCount, $solutionCount, $sFeatureCount, $timerJobCount = 0,0,0,0 | Out-Null
-	$serviceAppProxyCount, $serviceAppProxyGroupCount, $searchsvcAppsCount  = 0, 0, 0 | Out-Null
-	$SvcAppCount = 0 | Out-Null
+	$null = $Servernum, $totalContentDBCount, $WebAppnum, $serviceAppPoolCount, $FeatureCount = 0,0,0,0,0,0,0
+	$null = $wFeatureCount, $solutionCount, $sFeatureCount, $timerJobCount = 0,0,0,0
+	$null = $serviceAppProxyCount, $serviceAppProxyGroupCount, $searchsvcAppsCount  = 0, 0, 0
+	$null = $SvcAppCount = 0
 
 	# Declaring all string[] arrays
-	[System.string[]] $Servers, $ServersId | Out-Null
-	[System.string[]] $searchServiceAppIds | Out-Null
+	$null = [System.string[]] $Servers, $ServersId
+	$null = [System.string[]] $searchServiceAppIds
 	# remove this line man [System.string[]] $delimiterChars, $delimiterChars2, $delimiterChars3, $delimiterChars4 | Out-Null
 
 	# Declaring all string[,] arrays
-	[System.string[,]] $ServicesOnServers, $WebAppDetails | Out-Null
-	[System.string[,]] $WebAppExtended, $WebAppInternalAAMURL, $WebAppPublicAAM, $WebAppAuthProviders | Out-Null
-	[System.string[,]] $ContentDBs, $ContentDBSitesNum, $solutionProps, $ContentDBProps | Out-Null
-	[System.string[,]] $FarmFeatures, $SiteFeatures, $WebFeatures | Out-Null
+	$null = [System.string[,]] $ServicesOnServers, $WebAppDetails
+	$null = [System.string[,]] $WebAppExtended, $WebAppInternalAAMURL, $WebAppPublicAAM, $WebAppAuthProviders
+	$null = [System.string[,]] $ContentDBs, $ContentDBSitesNum, $solutionProps, $ContentDBProps
+	$null = [System.string[,]] $FarmFeatures, $SiteFeatures, $WebFeatures
 
 	# Declaring three dimensional arrays
-	[System.string[,,]] $serverProducts | Out-Null
+	$null = [System.string[,,]] $serverProducts
 
 	# Declaring PowerShell environment settings
 	$FormatEnumerationLimit = 25
 
 	# Declaring XML data variables
-	[System.Xml.XmlDocument]$XMLToParse | Out-Null
-	[System.Xml.XmlDocument]$global:CDGI | Out-Null
-	[System.Xml.XmlNode]$XmlNode | Out-Null
+	$null = [System.Xml.XmlDocument]$XMLToParse
+	$null = [System.Xml.XmlDocument]$global:CDGI
+	$null = [System.Xml.XmlNode]$XmlNode
 
 	# Declaring all Hash Tables
 	$global:ServerRoles = @{}
