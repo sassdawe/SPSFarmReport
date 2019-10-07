@@ -39,7 +39,7 @@ function o16enumProdVersions{
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumProdVersions", $_)
+        global:HandleException("o16enumProdVersions", $_)
         return 0
     }
 }

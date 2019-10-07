@@ -31,7 +31,7 @@ function o16enumCDConfig {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15CDConfig", $_)
+        global:HandleException("o16CDConfig", $_)
         return 0
     }
 }

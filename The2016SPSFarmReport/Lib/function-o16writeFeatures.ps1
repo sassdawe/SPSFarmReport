@@ -45,6 +45,6 @@ function o16writeFeatures {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15writeFeatures", $_)
+        global:HandleException("o16writeFeatures", $_)
     }
 }

@@ -92,6 +92,6 @@ function o16writeProdVersions2() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15writeProdVersions2", $_)
+        global:HandleException("o16writeProdVersions2", $_)
     }
 }

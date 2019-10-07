@@ -28,6 +28,6 @@ function o16enumSearchActiveTopologies{
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumSearchActiveTopologies", $_)
+        global:HandleException("o16enumSearchActiveTopologies", $_)
     }
 }

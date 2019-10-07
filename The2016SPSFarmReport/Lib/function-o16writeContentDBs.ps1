@@ -45,6 +45,6 @@ function o16writeContentDBs() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15writeContentDBs", $_)
+        global:HandleException("o16writeContentDBs", $_)
     }
 }

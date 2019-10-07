@@ -12,6 +12,6 @@ function o16enumSearchConfigAdminComponents{
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumSearchConfigAdminComponents", $_)
+        global:HandleException("o16enumSearchConfigAdminComponents", $_)
     }
 }

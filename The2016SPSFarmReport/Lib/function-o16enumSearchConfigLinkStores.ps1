@@ -13,6 +13,6 @@ function o16enumSearchConfigLinkStores {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumSearchConfigLinkStores", $_)
+        global:HandleException("o16enumSearchConfigLinkStores", $_)
     }
 }

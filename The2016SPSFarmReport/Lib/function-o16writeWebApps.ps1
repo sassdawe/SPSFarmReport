@@ -33,6 +33,6 @@ function o16writeWebApps() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15writeWebApps", $_)
+        global:HandleException("o16writeWebApps", $_)
     }
 }

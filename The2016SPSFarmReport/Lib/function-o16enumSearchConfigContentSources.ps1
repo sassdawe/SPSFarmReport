@@ -20,6 +20,6 @@ function o16enumSearchConfigContentSources {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumSearchConfigContentSources", $_)
+        global:HandleException("o16enumSearchConfigContentSources", $_)
     }
 }

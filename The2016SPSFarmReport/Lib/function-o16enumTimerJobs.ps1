@@ -20,7 +20,7 @@ function o16enumTimerJobs() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumTimerJobs", $_)
+        global:HandleException("o16enumTimerJobs", $_)
         return 0
     }
 }

@@ -23,7 +23,7 @@ function o16enumSPDcacheConfig {
 
         ForEach ($container in $global:_DCacheContainerNames) {
             $global:XMLToParse = New-Object System.Xml.XmlDocument
-            $global:XMLToParse = [xml] (get-SPDistributedCacheClientSetting $container  | ConvertTo-Xml -notypeinformation)
+            $global:XMLToParse = [xml] (Get-SPDistributedCacheClientSetting $container  | ConvertTo-Xml -notypeinformation)
             $tempstr = [System.String]$global:XMLToParse.Objects.Object.InnerXml
             $global:_DCacheContainers.Add($container, $tempstr)
         }
@@ -31,7 +31,7 @@ function o16enumSPDcacheConfig {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumSPServiceApplicationPools", $_)
+        global:HandleException("o16enumSPDcacheConfig", $_)
         return 0
     }
 }

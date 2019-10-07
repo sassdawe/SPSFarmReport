@@ -26,7 +26,7 @@ function o16enumSPServiceApplicationProxies() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumSPServiceApplicationProxies", $_)
+        global:HandleException("o16enumSPServiceApplicationProxies", $_)
         return 0
     }
 }

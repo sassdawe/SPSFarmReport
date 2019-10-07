@@ -20,7 +20,7 @@ function o16enumHostControllers{
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15enumHostControllers", $_)
+        global:HandleException("o16enumHostControllers", $_)
         return 0
     }
 }

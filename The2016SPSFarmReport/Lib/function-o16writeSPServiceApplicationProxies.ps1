@@ -23,6 +23,6 @@ function o16writeSPServiceApplicationProxies {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o15writeSPServiceApplicationProxies", $_)
+        global:HandleException("o16writeSPServiceApplicationProxies", $_)
     }
 }
