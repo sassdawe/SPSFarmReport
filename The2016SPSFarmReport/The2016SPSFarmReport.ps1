@@ -6,7 +6,7 @@
 
 	Write-Verbose "Loading functions"
 	$scriptPath = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
-    Get-ChildItem $scriptPath -Filter "function*" -Include "*.ps1" -Exclude "*.tests.ps1" -Recurse | ForEach-Object {
+    Get-ChildItem "$scriptPath\Lib" -Filter "function*" -Include "*.ps1" -Exclude "*.tests.ps1" -Recurse | ForEach-Object {
         Invoke-Expression ". $($_.FullName)"
 	}
 	Write-Verbose "Functions are loaded"
