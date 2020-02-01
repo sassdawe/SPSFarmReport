@@ -104,6 +104,7 @@
 	$global:_logpath = [Environment]::CurrentDirectory + "\2016SPSFarmReport{0}{1:d2}{2:d2}-{3:d2}{4:d2}" -f (Get-Date).Day,(Get-Date).Month,(Get-Date).Year,(Get-Date).Second,(Get-Date).Millisecond + ".LOG"
 	$global:_DCacheContainerNames = @("DistributedAccessCache", "DistributedActivityFeedCache", "DistributedActivityFeedLMTCache", "DistributedBouncerCache", "DistributedDefaultCache", "DistributedFileLockThrottlerCache", "DistributedHealthScoreCache", "DistributedLogonTokenCache", "DistributedResourceTallyCache", "DistributedSecurityTrimmingCache", "DistributedServerToAppServerAccessTokenCache", "DistributedSharedWithUserCache", "DistributedUnifiedGroupsCache", "DistributedSearchCache" )
 
+	#region init
 	$dtime = " Starting run of SPSFarmReport at " + (Get-Date).ToString()
 	Write-Output "---------------------------------------------------------------------------------" | Out-File -FilePath $global:_logpath -Append
 	Write-Output  $dtime | Out-File -FilePath $global:_logpath -Append
@@ -113,7 +114,9 @@
 	$dtime = " Completed running o16WriteInitialXML at " + (Get-Date).ToString()
 	Write-Host o16WriteInitialXML
 	Write-Output  $dtime | Out-File -FilePath $global:_logpath -Append
+	#endregion init
 
+	#region farm config
 	$status = o16farmConfig
 	$dtime = " Completed running o16farmConfig at " + (Get-Date).ToString()
 	Write-Host o16farmConfig
@@ -124,7 +127,9 @@
 		Write-Host o16WriteFarmGenSettings
 		Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 	}
+	#endregion farm config
 
+	#region servers
 	$status = o16enumServers
 	$dtime = " Completed running o16enumServers at " + (Get-Date).ToString()
 	Write-Output o16enumServers
@@ -135,7 +140,9 @@
 		Write-Host o16writeServers
 		Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 	}
+	#endregion servers
 
+	#region distributed cache
 	$status = o16enumSPDcacheConfig
 	$dtime = " Completed running o16enumSPDcacheConfig at " + (Get-Date).ToString()
 	Write-Output o16enumSPDcacheConfig
@@ -146,6 +153,7 @@
 		Write-Host o16writeDCacheConfig
 		Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 	}
+	#endregion distributed cache
 
 	$status = o16enumProdVersions
 	$dtime = " Completed running o16enumProdVersions at " + (Get-Date).ToString()
