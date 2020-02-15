@@ -318,9 +318,9 @@
 	Write-Host o16enumTimerJobs
 	Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 	if($status -eq 1) {
-		o16writeTimerJobs
-		$dtime = " Completed running o16writeTimerJobs at " + (Get-Date).ToString()
-		Write-Host o16writeTimerJobs
+		Write-SPSRTimerJob
+		$dtime = " Completed running Write-SPSRTimerJob at " + (Get-Date).ToString()
+		Write-Host "Write-SPSRTimerJob"
 		Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 	}
 
