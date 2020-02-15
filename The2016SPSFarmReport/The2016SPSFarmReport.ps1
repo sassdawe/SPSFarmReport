@@ -24,12 +24,14 @@
 	$null = $DSN, $confgDbServerName, $confgDbName, $BuildVersion, $systemAccount = "","","","",""
 	$null = $adminURL, $adminDbName, $adminDbServerName, $enterpriseSearchServiceStatus, $enterpriseSearchServiceJobDefs  = "","","","",""
 	$null = $exceptionDetails = ""
+	$null = $exceptionDetails
 
 	# Declaing all integer variables
 	$null = $Servernum, $totalContentDBCount, $WebAppnum, $serviceAppPoolCount, $FeatureCount = 0,0,0,0,0,0,0
 	$null = $wFeatureCount, $solutionCount, $sFeatureCount, $timerJobCount = 0,0,0,0
 	$null = $serviceAppProxyCount, $serviceAppProxyGroupCount, $searchsvcAppsCount  = 0, 0, 0
 	$null = $SvcAppCount = 0
+	$null = $SvcAppCount
 
 	# Declaring all string[] arrays
 	$null = [System.string[]] $Servers, $ServersId
@@ -46,7 +48,8 @@
 	$null = [System.string[,,]] $serverProducts
 
 	# Declaring PowerShell environment settings
-	$FormatEnumerationLimit = 25
+	$null = $FormatEnumerationLimit = 25
+	$null = $FormatEnumerationLimit
 
 	# Declaring XML data variables
 	$null = [System.Xml.XmlDocument]$XMLToParse
@@ -263,9 +266,9 @@
 	Write-Host o16enumWebApps
 	Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 	if($status -eq 1) {
-		o16writeWebApps
-		$dtime = " Completed running o16writeWebApps at " + (Get-Date).ToString()
-		Write-Host o16writeWebApps
+		Write-SPSRWebApp
+		$dtime = " Completed running Write-SPSRWebApp at " + (Get-Date).ToString()
+		Write-Host "Write-SPSRWebApp"
 		Write-Output $dtime | Out-File -FilePath $global:_logpath -Append
 
 		o16writeAAMsnAPs
