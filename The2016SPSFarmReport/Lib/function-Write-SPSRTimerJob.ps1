@@ -1,13 +1,18 @@
-function o16writeTimerJobs() {
+function Write-SPSRTimerJob {
+    [Alias("o16writeTimerJobs")]
+    [CmdletBinding()]
+    param (
+    )
     try {
-        if ($global:timerJobs.Count -eq 0)
-        { exit }
-				
+        if ($global:timerJobs.Count -eq 0) {
+            exit
+        }
+
         $global:XMLWriter.WriteStartElement("Timer_Jobs")
 
         #Writing them
         $global:timerJobs.GetEnumerator() | ForEach-Object {
-		
+
             $id = $_.value.Split("||")[0]
             $title = $_.value.Split("||")[2]
             $webapplication = $_.value.Split("||")[4]
@@ -15,10 +20,10 @@ function o16writeTimerJobs() {
             $lastruntime = $_.value.Split("||")[8]
             $isdisabled = $_.value.Split("||")[10]
             $locktype = $_.value.Split("||")[12]
-			
+            $null = $id
             $global:XMLWriter.WriteStartElement("Job")
             $global:XMLWriter.WriteAttributeString("Id", $_.key)
-            $global:XMLWriter.WriteAttributeString("Title", $title.replace('"', " "))
+            $global:XMLWriter.WriteAttributeString("Title", $title.replace( '"', " ") )
             $global:XMLWriter.WriteAttributeString("WebApplication", $webapplication)
             $global:XMLWriter.WriteAttributeString("Schedule", $schedule)
             $global:XMLWriter.WriteAttributeString("LastRunTime", $lastruntime)
@@ -26,7 +31,7 @@ function o16writeTimerJobs() {
             $global:XMLWriter.WriteAttributeString("LockType", $locktype)
             $global:XMLWriter.WriteEndElement()
         }
-			
+
         $global:XMLWriter.WriteEndElement()
     }
     catch [System.Exception] {
