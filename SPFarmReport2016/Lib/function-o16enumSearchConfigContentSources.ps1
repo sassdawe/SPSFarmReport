@@ -2,9 +2,9 @@ function o16enumSearchConfigContentSources {
     [cmdletbinding()]
     param ()
     try {
-        if ($global:searchsvcAppsCount -eq 0) { return }
+        if ($script:searchsvcAppsCount -eq 0) { return }
 
-        for ($tempCnt = 0; $tempCnt -lt $global:searchsvcAppsCount ; $tempCnt ++) {
+        for ($tempCnt = 0; $tempCnt -lt $script:searchsvcAppsCount ; $tempCnt ++) {
             $cmdstr = Get-SPEnterpriseSearchCrawlContentSource -SearchApplication $searchServiceAppIds[$tempCnt] | Select-Object Id | ft -HideTableHeaders | Out-String -Width 1000
             $cmdstr = $cmdstr.Trim().Split("`n")
 
@@ -14,7 +14,7 @@ function o16enumSearchConfigContentSources {
                 $tempXML = [xml] (Get-SPEnterpriseSearchCrawlContentSource -SearchApplication $searchServiceAppIds[$tempCnt] | Select-Object Name, Type, DeleteCount, ErrorCount, SuccessCount, WarningCount, StartAddresses, Id, CrawlStatus, CrawlStarted, CrawlCompleted, CrawlState | Where-Object {$_.Id -eq $cmdstr2 } | ConvertTo-Xml -NoTypeInformation)
                 $tempstr = [System.String] $tempXML.Objects.Object.InnerXML
                 $searchServiceAppID = $searchServiceAppID + "|" + $cmdstr2
-                $global:SearchConfigContentSources.Add($searchServiceAppID, $tempstr)
+                $script:SearchConfigContentSources.Add($searchServiceAppID, $tempstr)
             }
         }
     }

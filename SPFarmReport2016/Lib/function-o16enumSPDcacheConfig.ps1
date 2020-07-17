@@ -6,26 +6,26 @@ function o16enumSPDcacheConfig {
         Use-CacheCluster
         $hostdetails = Get-CacheHost
         if ($hostdetails.Length -lt 2) {
-            $global:XMLToParse = New-Object System.Xml.XmlDocument
-            $global:XMLToParse = [xml] ($hostdetails[$count]  | ConvertTo-Xml -notypeinformation)
-            $tempstr = [System.String]$global:XMLToParse.Objects.Object.InnerXml
-            $global:_DCacheHosts.Add($hostdetails.Hostname, $tempstr)
+            $script:XMLToParse = New-Object System.Xml.XmlDocument
+            $script:XMLToParse = [xml] ($hostdetails[$count]  | ConvertTo-Xml -notypeinformation)
+            $tempstr = [System.String]$script:XMLToParse.Objects.Object.InnerXml
+            $script:_DCacheHosts.Add($hostdetails.Hostname, $tempstr)
         }
         else {
             $hostdetails.GetEnumerator() | ForEach-Object {
-                $global:XMLToParse = New-Object System.Xml.XmlDocument
-                $global:XMLToParse = [xml] ($hostdetails[$count]  | ConvertTo-Xml -notypeinformation)
-                $tempstr = [System.String]$global:XMLToParse.Objects.Object.InnerXml
-                $global:_DCacheHosts.Add($_.Hostname, $tempstr)
+                $script:XMLToParse = New-Object System.Xml.XmlDocument
+                $script:XMLToParse = [xml] ($hostdetails[$count]  | ConvertTo-Xml -notypeinformation)
+                $tempstr = [System.String]$script:XMLToParse.Objects.Object.InnerXml
+                $script:_DCacheHosts.Add($_.Hostname, $tempstr)
                 $count++
             }
         }
 
-        ForEach ($container in $global:_DCacheContainerNames) {
-            $global:XMLToParse = New-Object System.Xml.XmlDocument
-            $global:XMLToParse = [xml] (Get-SPDistributedCacheClientSetting $container  | ConvertTo-Xml -notypeinformation)
-            $tempstr = [System.String]$global:XMLToParse.Objects.Object.InnerXml
-            $global:_DCacheContainers.Add($container, $tempstr)
+        ForEach ($container in $script:_DCacheContainerNames) {
+            $script:XMLToParse = New-Object System.Xml.XmlDocument
+            $script:XMLToParse = [xml] (Get-SPDistributedCacheClientSetting $container  | ConvertTo-Xml -notypeinformation)
+            $tempstr = [System.String]$script:XMLToParse.Objects.Object.InnerXml
+            $script:_DCacheContainers.Add($container, $tempstr)
         }
         return 1
     }

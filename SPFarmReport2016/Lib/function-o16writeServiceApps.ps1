@@ -3,220 +3,220 @@ function o16writeServiceApps {
         $xrs = New-Object -TypeName System.Xml.XmlReaderSettings
         $xrs.ConformanceLevel = [System.Xml.ConformanceLevel]::Fragment
 		
-        $global:XMLWriter.WriteStartElement("Service_Applications")		
-        $global:ServiceApps.GetEnumerator() | ForEach-Object {
+        $script:XMLWriter.WriteStartElement("Service_Applications")		
+        $script:ServiceApps.GetEnumerator() | ForEach-Object {
 		
             $isSearchSvcApp = 0	
             $isProjectSvcApp = 0          
             $prjApp = $_.Value
             $ServiceAppID = ($_.key.Split('|'))[0]
             $typeName = ($_.key.Split('|'))[1]		
-            if ($global:projectsvcApps.Id -eq $ServiceAppID) { $isProjectSvcApp = 1}  	
+            if ($script:projectsvcApps.Id -eq $ServiceAppID) { $isProjectSvcApp = 1}  	
 	
             ForEach ($searchAppId in $searchServiceAppIds) {
                 if ($searchAppId -eq $ServiceAppID) { $isSearchSvcApp = 1 }
             }
 		
-            $global:XMLWriter.WriteStartElement("Service_Application")
-            $global:XMLWriter.WriteAttributeString("Type", $typeName)
+            $script:XMLWriter.WriteStartElement("Service_Application")
+            $script:XMLWriter.WriteAttributeString("Type", $typeName)
 		
             if ($isSearchSvcApp -eq 1) {			
-                $global:XMLWriter.WriteStartElement("General_Information")
-                $global:XMLWriter.WriteRaw($_.value)
-                $global:XMLWriter.WriteEndElement()
+                $script:XMLWriter.WriteStartElement("General_Information")
+                $script:XMLWriter.WriteRaw($_.value)
+                $script:XMLWriter.WriteEndElement()
 			
                 #Writing the Search Service Status
-                $global:XMLWriter.WriteStartElement("Enterprise_Search_Service_Status")
+                $script:XMLWriter.WriteStartElement("Enterprise_Search_Service_Status")
                 try {
-                    $global:XMLWriter.WriteStartElement("General_Information")
-                    $global:XMLWriter.WriteRaw($global:enterpriseSearchServiceStatus)
-                    $global:XMLWriter.WriteEndElement()
+                    $script:XMLWriter.WriteStartElement("General_Information")
+                    $script:XMLWriter.WriteRaw($script:enterpriseSearchServiceStatus)
+                    $script:XMLWriter.WriteEndElement()
 					
-                    $global:XMLWriter.WriteStartElement("Job_Definitions")
-                    $global:XMLWriter.WriteRaw($global:enterpriseSearchServiceJobDefs)
-                    $global:XMLWriter.WriteEndElement()
+                    $script:XMLWriter.WriteStartElement("Job_Definitions")
+                    $script:XMLWriter.WriteRaw($script:enterpriseSearchServiceJobDefs)
+                    $script:XMLWriter.WriteEndElement()
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()	
+                $script:XMLWriter.WriteEndElement()	
 			
                 #Writing the Active Topology
-                $global:XMLWriter.WriteStartElement("Active_Topology")
+                $script:XMLWriter.WriteStartElement("Active_Topology")
                 try {
-                    $global:SearchActiveTopologyComponents.GetEnumerator() | ForEach-Object {
+                    $script:SearchActiveTopologyComponents.GetEnumerator() | ForEach-Object {
                         $searchServiceAppID = ($_.key.Split('|'))[0]
                         if ($ServiceAppID -eq ($searchServiceAppID)) { 
                             $props = $_.value
                             $compName = ($_.key.Split('|'))[1]
-                            $global:XMLWriter.WriteStartElement("Component")
-                            $global:XMLWriter.WriteAttributeString("Name", $compName.Trim())
-                            $global:XMLWriter.WriteRaw($props)
-                            $global:XMLWriter.WriteEndElement()
+                            $script:XMLWriter.WriteStartElement("Component")
+                            $script:XMLWriter.WriteAttributeString("Name", $compName.Trim())
+                            $script:XMLWriter.WriteRaw($props)
+                            $script:XMLWriter.WriteEndElement()
                         }
                     }
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()		
+                $script:XMLWriter.WriteEndElement()		
 			
                 #Writing the Host Controllers
-                $global:XMLWriter.WriteStartElement("Host_Controllers")
+                $script:XMLWriter.WriteStartElement("Host_Controllers")
                 try {
-                    $global:SearchHostControllers.GetEnumerator() | ForEach-Object {
+                    $script:SearchHostControllers.GetEnumerator() | ForEach-Object {
                         $searchServiceAppID = ($_.key.Split('|'))[0]
                         if ($ServiceAppID -eq ($searchServiceAppID)) { 
                             $props = $_.value
                             $serverName = ($_.key.Split('|'))[1]
-                            $global:XMLWriter.WriteStartElement("Server")
-                            $global:XMLWriter.WriteAttributeString("Name", $serverName.Trim())
-                            $global:XMLWriter.WriteRaw($props)
-                            $global:XMLWriter.WriteEndElement()
+                            $script:XMLWriter.WriteStartElement("Server")
+                            $script:XMLWriter.WriteAttributeString("Name", $serverName.Trim())
+                            $script:XMLWriter.WriteRaw($props)
+                            $script:XMLWriter.WriteEndElement()
                         }
                     }
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()		
+                $script:XMLWriter.WriteEndElement()		
 			
                 #Writing the Admin Component
-                $global:XMLWriter.WriteStartElement("Admin_Component")
+                $script:XMLWriter.WriteStartElement("Admin_Component")
                 try {
-                    $global:SearchConfigAdminComponents.GetEnumerator() | ForEach-Object {
+                    $script:SearchConfigAdminComponents.GetEnumerator() | ForEach-Object {
                         if ($ServiceAppID -eq ($_.key)) { $adminComponent = $_.value}
                     }
-                    $global:XMLWriter.WriteRaw($adminComponent)
+                    $script:XMLWriter.WriteRaw($adminComponent)
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()			
+                $script:XMLWriter.WriteEndElement()			
 			
                 # Writing Link Stores
-                $global:XMLWriter.WriteStartElement("Link_Stores")
+                $script:XMLWriter.WriteStartElement("Link_Stores")
                 try {
-                    $global:SearchConfigLinkStores.GetEnumerator() | ForEach-Object {
+                    $script:SearchConfigLinkStores.GetEnumerator() | ForEach-Object {
                         if ($ServiceAppID -eq ($_.key)) { $storeValue = $_.value}
                     }
-                    $global:XMLWriter.WriteRaw($storeValue)
+                    $script:XMLWriter.WriteRaw($storeValue)
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()
+                $script:XMLWriter.WriteEndElement()
 			
                 #Writing the Crawl Databases
-                $global:XMLWriter.WriteStartElement("Crawl_Databases")
+                $script:XMLWriter.WriteStartElement("Crawl_Databases")
                 try {
-                    $global:SearchConfigCrawlDatabases.GetEnumerator() | ForEach-Object {
+                    $script:SearchConfigCrawlDatabases.GetEnumerator() | ForEach-Object {
                         $crawlComponent = ""
                         $searchServiceAppID = ($_.key.Split('|'))[0]
                         $crawlDatabaseID = ($_.key.Split('|'))[1]	
                         if ($ServiceAppID -eq $searchServiceAppID) { 
                             $crawlComponent = $_.value				
-                            $global:XMLWriter.WriteStartElement("Database")
-                            $global:XMLWriter.WriteAttributeString("Id", $crawlDatabaseID)
-                            $global:XMLWriter.WriteRaw($crawlComponent)
-                            $global:XMLWriter.WriteEndElement()
+                            $script:XMLWriter.WriteStartElement("Database")
+                            $script:XMLWriter.WriteAttributeString("Id", $crawlDatabaseID)
+                            $script:XMLWriter.WriteRaw($crawlComponent)
+                            $script:XMLWriter.WriteEndElement()
                         }
                     }
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()			
+                $script:XMLWriter.WriteEndElement()			
 			
                 #Writing crawl rules
-                $global:XMLWriter.WriteStartElement("Crawl_Rules")
+                $script:XMLWriter.WriteStartElement("Crawl_Rules")
                 try {
-                    $global:SearchConfigCrawlRules.GetEnumerator() | ForEach-Object {
+                    $script:SearchConfigCrawlRules.GetEnumerator() | ForEach-Object {
                         $searchServiceAppID = ($_.key.Split('|'))[0]
                         $crawlRuleName = ($_.key.Split('|'))[1]	
                         if ($ServiceAppID -eq $searchServiceAppID) { 
                             $crawlRule = $_.value				
-                            $global:XMLWriter.WriteStartElement("Rule")
-                            $global:XMLWriter.WriteAttributeString("Name", $crawlRuleName)
-                            $global:XMLWriter.WriteRaw($crawlRule)
-                            $global:XMLWriter.WriteEndElement()
+                            $script:XMLWriter.WriteStartElement("Rule")
+                            $script:XMLWriter.WriteAttributeString("Name", $crawlRuleName)
+                            $script:XMLWriter.WriteRaw($crawlRule)
+                            $script:XMLWriter.WriteEndElement()
                         }
                     }
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()	
+                $script:XMLWriter.WriteEndElement()	
 			
                 #Writing the Query Site Settings
-                $global:XMLWriter.WriteStartElement("Query_and_Site_Settings")
+                $script:XMLWriter.WriteStartElement("Query_and_Site_Settings")
                 try {
-                    $global:SearchConfigQuerySiteSettings.GetEnumerator() | ForEach-Object {
+                    $script:SearchConfigQuerySiteSettings.GetEnumerator() | ForEach-Object {
                         $queryComponent = ""
                         $searchServiceAppID = ($_.key.Split('|'))[0]
                         $queryComponentID = ($_.key.Split('|'))[1]	
                         if ($ServiceAppID -eq $searchServiceAppID) { 
                             $queryComponent = $_.value
-                            $global:XMLWriter.WriteStartElement("Instance")
-                            $global:XMLWriter.WriteAttributeString("Id", $queryComponentID)
-                            $global:XMLWriter.WriteRaw($queryComponent)
-                            $global:XMLWriter.WriteEndElement()
+                            $script:XMLWriter.WriteStartElement("Instance")
+                            $script:XMLWriter.WriteAttributeString("Id", $queryComponentID)
+                            $script:XMLWriter.WriteRaw($queryComponent)
+                            $script:XMLWriter.WriteEndElement()
                         }
                     }
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()
+                $script:XMLWriter.WriteEndElement()
 			
                 #Writing the Content Sources
-                $global:XMLWriter.WriteStartElement("Content_Sources")
+                $script:XMLWriter.WriteStartElement("Content_Sources")
                 try {
-                    $global:SearchConfigContentSources.GetEnumerator() | ForEach-Object {
+                    $script:SearchConfigContentSources.GetEnumerator() | ForEach-Object {
                         $contentSource = ""
                         $searchServiceAppID = ($_.key.Split('|'))[0]
                         $contentSourceID = ($_.key.Split('|'))[1]	
                         if ($ServiceAppID -eq $searchServiceAppID) { 
                             $contentSource = $_.value
-                            $global:XMLWriter.WriteStartElement("Content_Source")
-                            $global:XMLWriter.WriteAttributeString("Id", $contentSourceID)
-                            $global:XMLWriter.WriteRaw($contentSource)
-                            $global:XMLWriter.WriteEndElement()
+                            $script:XMLWriter.WriteStartElement("Content_Source")
+                            $script:XMLWriter.WriteAttributeString("Id", $contentSourceID)
+                            $script:XMLWriter.WriteRaw($contentSource)
+                            $script:XMLWriter.WriteEndElement()
                         }
                     }
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()			
+                $script:XMLWriter.WriteEndElement()			
             }		
             elseif ($isProjectSvcApp -eq 1) {			        
-                $global:XMLWriter.WriteStartElement("ProjectServer_General_Information")
-                $global:XMLWriter.WriteRaw($prjApp)
-                $global:XMLWriter.WriteEndElement()        
+                $script:XMLWriter.WriteStartElement("ProjectServer_General_Information")
+                $script:XMLWriter.WriteRaw($prjApp)
+                $script:XMLWriter.WriteEndElement()        
                 $cnt = 0 
            
                 #Writing Project Server Instance Information                   
-                $global:XMLWriter.WriteStartElement("ProjectServer_Instances")
-                $global:XMLWriter.WriteAttributeString("Type", "Project Server Instances")			
+                $script:XMLWriter.WriteStartElement("ProjectServer_Instances")
+                $script:XMLWriter.WriteAttributeString("Type", "Project Server Instances")			
                 try {                                        
-                    $global:projectInstances.GetEnumerator() | ForEach-Object {
+                    $script:projectInstances.GetEnumerator() | ForEach-Object {
                         $prjAppID = ($_.key.Split('|'))[0]
                         $prjName = ($_.key.Split('|'))[1]						
                         $prjInst = $_.value				
-                        $global:XMLWriter.WriteStartElement("ProjectServer_Instance")
-                        $global:XMLWriter.WriteAttributeString("Number", $cnt)
-                        $global:XMLWriter.WriteRaw($prjInst)
-                        $global:XMLWriter.WriteEndElement()
+                        $script:XMLWriter.WriteStartElement("ProjectServer_Instance")
+                        $script:XMLWriter.WriteAttributeString("Number", $cnt)
+                        $script:XMLWriter.WriteRaw($prjInst)
+                        $script:XMLWriter.WriteEndElement()
                         $cnt++					
                     }                                  	                                          
                                 
@@ -224,36 +224,36 @@ function o16writeServiceApps {
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()
+                $script:XMLWriter.WriteEndElement()
 
                 #Writing Project Server PCS Settings
-                $global:XMLWriter.WriteStartElement("ProjectServer_PCSSettings")
-                $global:XMLWriter.WriteAttributeString("Type", "Project PCS Settings")			
+                $script:XMLWriter.WriteStartElement("ProjectServer_PCSSettings")
+                $script:XMLWriter.WriteAttributeString("Type", "Project PCS Settings")			
                 try {    
-                    $global:XMLWriter.WriteStartElement("General_Information")
-                    $global:XMLWriter.WriteAttributeString("TimeOut", $global:projectPCSSettings.EditingSessionTimeout)
-                    $global:XMLWriter.WriteAttributeString("WorkerCount", $global:projectPCSSettings.MaximumWorkersCount)
-                    $global:XMLWriter.WriteAttributeString("RequestTimeLimits", $global:projectPCSSettings.RequestTimeLimits)
-                    $global:XMLWriter.WriteAttributeString("MaximumProjectSize", $global:projectPCSSettings.MaximumProjectSize)                               
-                    $global:XMLWriter.WriteEndElement()                             
+                    $script:XMLWriter.WriteStartElement("General_Information")
+                    $script:XMLWriter.WriteAttributeString("TimeOut", $script:projectPCSSettings.EditingSessionTimeout)
+                    $script:XMLWriter.WriteAttributeString("WorkerCount", $script:projectPCSSettings.MaximumWorkersCount)
+                    $script:XMLWriter.WriteAttributeString("RequestTimeLimits", $script:projectPCSSettings.RequestTimeLimits)
+                    $script:XMLWriter.WriteAttributeString("MaximumProjectSize", $script:projectPCSSettings.MaximumProjectSize)                               
+                    $script:XMLWriter.WriteEndElement()                             
                 }
                 catch [System.Exception] {
                     Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-                    Write-Output $_ | Out-File -FilePath $global:_logpath -Append
+                    Write-Output $_ | Out-File -FilePath $script:_logpath -Append
                 }
-                $global:XMLWriter.WriteEndElement()
+                $script:XMLWriter.WriteEndElement()
             
             }
             elseif ($isSearchSvcApp -eq 0 -and $isProjectSvcApp -eq 0) {
-                $global:XMLWriter.WriteRaw($_.value)
+                $script:XMLWriter.WriteRaw($_.value)
             }
 		
-            $global:XMLWriter.WriteEndElement()
+            $script:XMLWriter.WriteEndElement()
 		
         }		
-        $global:XMLWriter.WriteEndElement()
+        $script:XMLWriter.WriteEndElement()
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "

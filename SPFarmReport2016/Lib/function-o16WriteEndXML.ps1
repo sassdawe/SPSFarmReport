@@ -1,9 +1,9 @@
 function o16WriteEndXML() {
     try {
         # Initial tag -> End
-        #$global:XMLWriter.WriteEndElement()
-        if ($global:exceptionDetails.Length -gt 0) {
-            $XMLWriter.WriteComment($global:exceptionDetails)
+        #$script:XMLWriter.WriteEndElement()
+        if ($script:exceptionDetails.Length -gt 0) {
+            $XMLWriter.WriteComment($script:exceptionDetails)
         }
         $XMLWriter.WriteEndDocument()		
         $XMLWriter.Flush()

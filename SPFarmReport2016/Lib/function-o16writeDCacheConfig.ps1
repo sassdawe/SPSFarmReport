@@ -1,32 +1,32 @@
 function o16writeDCacheConfig {
     try {
-        $global:XMLWriter.WriteStartElement("Distributed_Cache")	
+        $script:XMLWriter.WriteStartElement("Distributed_Cache")	
 
-        $global:XMLWriter.WriteStartElement("Containers")	
-        $global:_DCacheContainers.GetEnumerator() | ForEach-Object {
+        $script:XMLWriter.WriteStartElement("Containers")	
+        $script:_DCacheContainers.GetEnumerator() | ForEach-Object {
             $keystr = $_.key
             $valuexml = $_.value | ConvertTo-Xml
-            $global:XMLWriter.WriteStartElement($keystr)
-            $global:XMLWriter.WriteRaw($valuexml.Objects.Object.InnerText)
+            $script:XMLWriter.WriteStartElement($keystr)
+            $script:XMLWriter.WriteRaw($valuexml.Objects.Object.InnerText)
             $XMLWriter.WriteEndElement()
         }
         $XMLWriter.WriteEndElement()
 
-        $global:XMLWriter.WriteStartElement("Hosts")	
-        if ($global:_DCacheHosts.Length -lt 2) {
+        $script:XMLWriter.WriteStartElement("Hosts")	
+        if ($script:_DCacheHosts.Length -lt 2) {
             $keystr = [string]$_DCacheHosts.keys
             if ($keystr.ToString() -match "^[0-9]") {$keystr = $keystr.ToString().Insert(0, "_") }
             $valuexml = $_DCacheHosts.values | ConvertTo-Xml
-            $global:XMLWriter.WriteStartElement($keystr)
-            $global:XMLWriter.WriteRaw($valuexml.Objects.Object.InnerText)
+            $script:XMLWriter.WriteStartElement($keystr)
+            $script:XMLWriter.WriteRaw($valuexml.Objects.Object.InnerText)
             $XMLWriter.WriteEndElement()
         }
         else {
-            $global:_DCacheHosts.GetEnumerator() | ForEach-Object {
+            $script:_DCacheHosts.GetEnumerator() | ForEach-Object {
                 $keystr = $_.key
                 $valuexml = $_.value | ConvertTo-Xml
-                $global:XMLWriter.WriteStartElement($keystr)
-                $global:XMLWriter.WriteRaw($valuexml.Objects.Object.InnerText)
+                $script:XMLWriter.WriteStartElement($keystr)
+                $script:XMLWriter.WriteRaw($valuexml.Objects.Object.InnerText)
                 $XMLWriter.WriteEndElement()
             }
         }

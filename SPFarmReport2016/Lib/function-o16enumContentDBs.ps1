@@ -3,20 +3,20 @@ function o16enumContentDBs {
     param ()
     try {
         $DiskSpaceReq = 0.000
-        $global:ContentDBProps = new-object 'System.String[,]' $global:totalContentDBCount, 8
+        $script:ContentDBProps = new-object 'System.String[,]' $script:totalContentDBCount, 8
         $count = 0
         $queryString = ""
         foreach ($webApplication in [Microsoft.SharePoint.Administration.SPWebService]::ContentService.WebApplications) {
             $contentDBs = $webApplication.ContentDatabases
 
             foreach ($contentDB in $contentDBs) {
-                $global:ContentDBProps[$count, 0] = $contentDB.Name
-                $global:ContentDBProps[$count, 1] = $webApplication.Name
-                $global:ContentDBProps[$count, 2] = $contentDB.Id.ToString()
-                $global:ContentDBProps[$count, 3] = $contentDB.ServiceInstance.DisplayName
-                $global:ContentDBProps[$count, 4] = $contentDB.Sites.Count.ToString()
+                $script:ContentDBProps[$count, 0] = $contentDB.Name
+                $script:ContentDBProps[$count, 1] = $webApplication.Name
+                $script:ContentDBProps[$count, 2] = $contentDB.Id.ToString()
+                $script:ContentDBProps[$count, 3] = $contentDB.ServiceInstance.DisplayName
+                $script:ContentDBProps[$count, 4] = $contentDB.Sites.Count.ToString()
                 $DiskSpaceReq = [double] $contentDB.DiskSizeRequired / 1048576
-                $global:ContentDBProps[$count, 5] = $DiskSpaceReq.ToString() + " MB"
+                $script:ContentDBProps[$count, 5] = $DiskSpaceReq.ToString() + " MB"
                 $DBConnectionString = $contentDB.DatabaseConnectionString
                 PSUsing ($sqlConnection = New-Object System.Data.SqlClient.SqlConnection $DBConnectionString) {
                     try {
@@ -26,7 +26,7 @@ function o16enumContentDBs {
                         $sqlConnection.Open() | Out-Null
                         $reader = $sqlcommand.ExecuteReader()
                         while ($reader.Read()) {
-                            $global:ContentDBProps[$count, 6] = $reader[0].ToString()
+                            $script:ContentDBProps[$count, 6] = $reader[0].ToString()
                         }
                         $reader.Close()
                     }
@@ -36,7 +36,7 @@ function o16enumContentDBs {
                         return -1
                     }
 
-                    $global:ContentDBProps[$count, 7] = $contentDB.NeedsUpgrade.ToString()
+                    $script:ContentDBProps[$count, 7] = $contentDB.NeedsUpgrade.ToString()
                 }
 
                 $count = $count + 1

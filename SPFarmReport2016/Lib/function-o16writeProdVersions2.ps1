@@ -1,15 +1,15 @@
 function o16writeProdVersions2() { 
-    $thCount = $global:_maxItemsonServer - 1
+    $thCount = $script:_maxItemsonServer - 1
     $writtenItem, $itemVal2Found, $allProductsConsistent = [Boolean] "false", [Boolean] "false", [Boolean] "false"
     $totalProducts = 0
     try {
-        for ($count = ($global:Servernum - 1); $count -ge 0; $count--) {
-            if ($global:serverProducts[$count, 0, 0] -eq $null)
+        for ($count = ($script:Servernum - 1); $count -ge 0; $count--) {
+            if ($script:serverProducts[$count, 0, 0] -eq $null)
             { continue }
 				
 				
-            if ( [System.Convert]::ToInt32(($global:serverProducts[$count, ($global:_maxProductsonServer - 1), ($global:_maxItemsonServer - 1)])) -gt $totalProducts)
-            { $totalProducts = [System.Convert]::ToInt32(($global:serverProducts[$count, ($global:_maxProductsonServer - 1), ($global:_maxItemsonServer - 1) ])) }
+            if ( [System.Convert]::ToInt32(($script:serverProducts[$count, ($script:_maxProductsonServer - 1), ($script:_maxItemsonServer - 1)])) -gt $totalProducts)
+            { $totalProducts = [System.Convert]::ToInt32(($script:serverProducts[$count, ($script:_maxProductsonServer - 1), ($script:_maxItemsonServer - 1) ])) }
         }
 		
         # get names of the installed products 
@@ -17,12 +17,12 @@ function o16writeProdVersions2() {
         $itemsInstalled = New-Object System.Collections.ArrayList
         $itemsWriter = New-Object System.Collections.ArrayList
 		
-        for ($count = ($global:Servernum - 1); $count -ge 0; $count--) {
-            for ($count2 = ($global:_maxProductsonServer - 1); $count2 -ge 1; $count2--) {
-                if (!$productsInstalled.Contains(($global:serverProducts[$count, $count2, 0])) -and ($serverProducts[$count, $count2, 0] -ne $null))
+        for ($count = ($script:Servernum - 1); $count -ge 0; $count--) {
+            for ($count2 = ($script:_maxProductsonServer - 1); $count2 -ge 1; $count2--) {
+                if (!$productsInstalled.Contains(($script:serverProducts[$count, $count2, 0])) -and ($serverProducts[$count, $count2, 0] -ne $null))
                 { $productsInstalled.Add(($serverProducts[$count, $count2, 0])) | Out-Null }
 
-                for ($count3 = 1; $count3 -le ($global:_maxItemsonServer - 2); $count3++) {
+                for ($count3 = 1; $count3 -le ($script:_maxItemsonServer - 2); $count3++) {
                     $itemVal2Found = [boolean] "false"
                     if ($serverProducts[$count, $count2, $count3] -ne $null) {
 						
@@ -58,7 +58,7 @@ function o16writeProdVersions2() {
         }
 		
         # Now, the writing part $Write-Host 
-        $global:XMLWriter.WriteStartElement("Installed_Products_on_Servers")
+        $script:XMLWriter.WriteStartElement("Installed_Products_on_Servers")
 		
         foreach ($tcp in $productsInstalled) {
             $star = [boolean] "false"
@@ -70,13 +70,13 @@ function o16writeProdVersions2() {
                 $XMLWriter.WriteStartElement("Item")	
                 $XMLWriter.WriteAttributeString("Name", $tcp0.Split(':')[1].Trim())
 				
-                for ($count = ($global:Servernum - 1); $count -ge 0; $count--) {
-                    for ($count2 = ($global:_maxProductsonServer - 1); $count2 -ge 1; $count2--) {
-                        for ($count3 = ($global:_maxItemsonServer - 2); $count3 -ge 1; $count3--) {
-                            if ($global:serverProducts[$count, $count2, $count3] -ne $null) {
+                for ($count = ($script:Servernum - 1); $count -ge 0; $count--) {
+                    for ($count2 = ($script:_maxProductsonServer - 1); $count2 -ge 1; $count2--) {
+                        for ($count3 = ($script:_maxItemsonServer - 2); $count3 -ge 1; $count3--) {
+                            if ($script:serverProducts[$count, $count2, $count3] -ne $null) {
                                 if ($tcp0.Split(':')[1].ToLower().Trim() -eq $serverProducts[$count, $count2, $count3].Split(':')[0].Trim().ToLower()) {
                                     $XMLWriter.WriteStartElement("Server")	
-                                    $XMLWriter.WriteAttributeString("Name", ($global:serverProducts[$count, 0, 0]))
+                                    $XMLWriter.WriteAttributeString("Name", ($script:serverProducts[$count, 0, 0]))
                                     $XMLWriter.WriteString(($serverProducts[$count, $count2, $count3].Split(':')[1]))
                                     $XMLWriter.WriteEndElement()
                                 }

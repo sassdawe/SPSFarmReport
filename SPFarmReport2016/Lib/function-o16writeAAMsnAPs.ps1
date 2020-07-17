@@ -5,8 +5,8 @@ function o16writeAAMsnAPs() {
         [Microsoft.SharePoint.Administration.SPUrlZone]::Internet, 
         [Microsoft.SharePoint.Administration.SPUrlZone]::Custom, 
         [Microsoft.SharePoint.Administration.SPUrlZone]::Extranet
-        $global:XMLWriter.WriteStartElement("Alternate_Access_Mappings")
-        for ($wcount = 0; $wcount -lt $global:WebAppnum; $wcount++) {
+        $script:XMLWriter.WriteStartElement("Alternate_Access_Mappings")
+        for ($wcount = 0; $wcount -lt $script:WebAppnum; $wcount++) {
             $XMLWriter.WriteStartElement("Web_Application")
             $XMLWriter.WriteAttributeString("Name", ($WebAppDetails[$wcount, 2]))
 			

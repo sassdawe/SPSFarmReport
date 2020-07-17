@@ -1,17 +1,17 @@
 function o16enumSPServiceApplicationProxyGroups() {
     try {
-        $global:SvcAppProxyGroupCount = 0
+        $script:SvcAppProxyGroupCount = 0
         $groupstr = Get-SPServiceApplicationProxyGroup | select Id | fl | Out-String
         $delimitLines = $groupstr.Split("`n")
 		
         ForEach ($GroupID in $delimitLines) {
             $GroupID = $GroupID.Trim()
             if (($GroupID -eq "") -or ($GroupID -eq "Id") -or ($GroupID -eq "--")) { continue }
-            $global:SvcAppProxyGroupCount ++
+            $script:SvcAppProxyGroupCount ++
             $GroupID = ($GroupID.Split(":"))[1]
             $GroupID = $GroupID.Trim()
-            $global:XMLToParse = New-Object System.Xml.XmlDocument
-            $global:XMLToParse = [xml](Get-SPServiceApplicationProxyGroup | Select-Object * -Exclude Proxies, DefaultProxies | where {$_.Id -eq $GroupID} | Out-String -Width 2000 | ConvertTo-XML )			
+            $script:XMLToParse = New-Object System.Xml.XmlDocument
+            $script:XMLToParse = [xml](Get-SPServiceApplicationProxyGroup | Select-Object * -Exclude Proxies, DefaultProxies | where {$_.Id -eq $GroupID} | Out-String -Width 2000 | ConvertTo-XML )			
             $ProxyGroups = Get-SPServiceApplicationProxyGroup | where {$_.Id -eq $GroupID} | select Proxies
             $ProxiesXML = [xml]($ProxyGroups.Proxies | select DisplayName | ConvertTo-Xml -NoTypeInformation)
             $FriendlyName = Get-SPServiceApplicationProxyGroup | where {$_.Id -eq $GroupID} | select FriendlyName | fl | Out-String
@@ -19,9 +19,9 @@ function o16enumSPServiceApplicationProxyGroups() {
             $FriendlyName = $FriendlyName.Trim()
             $ProxiesStr = [System.String]$ProxiesXML.Objects.OuterXML
             $tempstr1 = $GroupID + "|" + $FriendlyName 
-            $tempstr2 = [System.String]$global:XMLToParse.Objects.Object.InnerXml 
+            $tempstr2 = [System.String]$script:XMLToParse.Objects.Object.InnerXml 
             $tempstr2 = $tempstr2.Trim() + $ProxiesStr 
-            $global:SPServiceAppProxyGroups.Add($tempstr1, $tempstr2)
+            $script:SPServiceAppProxyGroups.Add($tempstr1, $tempstr2)
         }
         return 1
     }	

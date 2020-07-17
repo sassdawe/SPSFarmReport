@@ -4,23 +4,23 @@ function o16enumFeatures {
     try {
         $bindingFlags = [System.Reflection.BindingFlags] "NonPublic,Instance"
         [Microsoft.SharePoint.Administration.SPFarm] $mySPFarm = [Microsoft.SharePoint.Administration.SPWebService]::ContentService.Farm
-        $global:FeatureCount = 0
+        $script:FeatureCount = 0
         $FeatureCount2 = 0
         #PropertyInfo pi;
 
         #to retrieve the number of features deployed in farm
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Farm")) {
-                $global:FeatureCount++
+                $script:FeatureCount++
             }
         }
-        $global:FarmFeatures = new-object 'System.String[,]' $global:FeatureCount, 4;
+        $script:FarmFeatures = new-object 'System.String[,]' $script:FeatureCount, 4;
 
         #to retrieve the properties
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Farm")) {
-                if ($global:_farmFeatureDefinitions.ContainsKey($FeatureDefinition.DisplayName)) {
-                    $global:FarmFeatures[$FeatureCount2, 1] = $global:_farmFeatureDefinitions.Get_Item($FeatureDefinition.DisplayName)
+                if ($script:_farmFeatureDefinitions.ContainsKey($FeatureDefinition.DisplayName)) {
+                    $script:FarmFeatures[$FeatureCount2, 1] = $script:_farmFeatureDefinitions.Get_Item($FeatureDefinition.DisplayName)
                 }
                 else {
                     $FarmFeatures[$FeatureCount2, 1] = $FeatureDefinition.DisplayName
@@ -34,17 +34,17 @@ function o16enumFeatures {
             }
         }
 
-        $global:sFeatureCount = 0
+        $script:sFeatureCount = 0
         $FeatureCount2 = 0
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Site")) {
-                $global:sFeatureCount++
+                $script:sFeatureCount++
             }
         }
-        $global:SiteFeatures = new-object 'System.String[,]' $global:sFeatureCount, 4
+        $script:SiteFeatures = new-object 'System.String[,]' $script:sFeatureCount, 4
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Site")) {
-                $global:SiteFeatures[$FeatureCount2, 0] = $FeatureDefinition.Id.ToString()
+                $script:SiteFeatures[$FeatureCount2, 0] = $FeatureDefinition.Id.ToString()
                 $SiteFeatures[$FeatureCount2, 1] = $FeatureDefinition.DisplayName
                 $SiteFeatures[$FeatureCount2, 2] = $FeatureDefinition.SolutionId.ToString()
                 $pi = $FeatureDefinition.GetType().GetProperty("HasActivations", $bindingFlags)
@@ -53,14 +53,14 @@ function o16enumFeatures {
             }
         }
 
-        $global:wFeatureCount = 0
+        $script:wFeatureCount = 0
         $FeatureCount2 = 0
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Web")) {
-                $global:wFeatureCount++
+                $script:wFeatureCount++
             }
         }
-        $global:WebFeatures = new-object 'System.String[,]' $global:wFeatureCount, 4
+        $script:WebFeatures = new-object 'System.String[,]' $script:wFeatureCount, 4
         foreach ($FeatureDefinition in $mySPFarm.FeatureDefinitions) {
             if (($FeatureDefinition.Hidden.ToString() -ne "true") -and ($FeatureDefinition.Scope.ToString() -eq "Web")) {
                 $WebFeatures[$FeatureCount2, 0] = $FeatureDefinition.Id.ToString()

@@ -1,19 +1,19 @@
 function o16farmConfig() {
     try {
             
-        $global:DSN = Get-ItemProperty "hklm:SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\16.0\Secure\configdb" | select dsn | Format-Table -HideTableHeaders | Out-String -Width 1024
+        $script:DSN = Get-ItemProperty "hklm:SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\16.0\Secure\configdb" | select dsn | Format-Table -HideTableHeaders | Out-String -Width 1024
         if (-not $?) {
             Write-Host You will need to run this program on a server where SharePoint is installed.
             exit
         }
-        $global:DSN = out-string -InputObject $global:DSN
-        $confgDbServerNameTemp = $global:DSN -split '[=;]' 
-        $global:confgDbServerName = $confgDbServerNameTemp[1]
-        $global:confgDbName = $confgDbServerNameTemp[3]
+        $script:DSN = out-string -InputObject $script:DSN
+        $confgDbServerNameTemp = $script:DSN -split '[=;]' 
+        $script:confgDbServerName = $confgDbServerNameTemp[1]
+        $script:confgDbName = $confgDbServerNameTemp[3]
 
         [Microsoft.SharePoint.Administration.SPFarm] $mySPFarm = [Microsoft.SharePoint.Administration.SPWebService]::ContentService.Farm
-        $global:BuildVersion = [string] $mySPFarm.BuildVersion
-        $global:systemAccount = $mySPFarm.TimerService.ProcessIdentity.Username.ToString()
+        $script:BuildVersion = [string] $mySPFarm.BuildVersion
+        $script:systemAccount = $mySPFarm.TimerService.ProcessIdentity.Username.ToString()
         [Microsoft.SharePoint.Administration.SPServerCollection] $mySPServerCollection = $mySPFarm.Servers
         [Microsoft.SharePoint.Administration.SPWebApplicationCollection] $mySPAdminWebAppCollection = [Microsoft.SharePoint.Administration.SPWebService]::AdministrationService.WebApplications
         [Microsoft.SharePoint.Administration.SPTimerService] $spts = $mySPFarm.TimerService   
@@ -26,15 +26,15 @@ function o16farmConfig() {
                     foreach ($mySPAlternateUrl in $mySPAdminWebApp.AlternateUrls) {
                         switch ($mySPAlternateUrl.UrlZone.ToString().Trim()) {
                             default {
-                                $global:adminURL = $mySPAlternateUrl.IncomingUrl.ToString()
+                                $script:adminURL = $mySPAlternateUrl.IncomingUrl.ToString()
                             }
                         }
                     }
                     [Microsoft.SharePoint.Administration.SPContentDatabaseCollection] $mySPContentDBCollection = $mySPAdminWebApp.ContentDatabases;
                     $mySPContentDB = new-object Microsoft.SharePoint.Administration.SPContentDatabase
                     foreach ( $mySPContentDB in $mySPContentDBCollection) {
-                        $global:adminDbName = $mySPContentDB.Name.ToString()
-                        $global:adminDbServerName = $mySPContentDB.Server.ToString()
+                        $script:adminDbName = $mySPContentDB.Name.ToString()
+                        $script:adminDbServerName = $mySPContentDB.Server.ToString()
                     }
                 }
             }
@@ -42,7 +42,7 @@ function o16farmConfig() {
 				
         $productsNum = ((($mySPFarm.Products | ft -HideTableHeaders | Out-String).Trim()).Split("`n")).Count
         if ($productsNum -eq 1)
-        { $global:isFoundationOnlyInstalled = $true }
+        { $script:isFoundationOnlyInstalled = $true }
         return 1
     } 
     

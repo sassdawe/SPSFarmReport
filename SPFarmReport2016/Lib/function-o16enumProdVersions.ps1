@@ -2,8 +2,8 @@ function o16enumProdVersions{
     [cmdletbinding()]
     param ()
     try {
-        $global:serverProducts = new-object 'System.String[,,]' $global:Servernum, $global:_maxProductsonServer, $global:_maxItemsonServer
-        $count = $global:Servernum - 1
+        $script:serverProducts = new-object 'System.String[,,]' $script:Servernum, $script:_maxProductsonServer, $script:_maxItemsonServer
+        $count = $script:Servernum - 1
         $count2, $count3 = 0, 0
 
         [Microsoft.SharePoint.Administration.SPProductVersions] $versions = [Microsoft.SharePoint.Administration.SPProductVersions]::GetProductVersions()
@@ -14,7 +14,7 @@ function o16enumProdVersions{
             $count3 = 0;
             $products = New-Object 'System.Collections.Generic.List[System.String]' (, $prodInfo.Products)
             $products.Sort()
-            $global:serverProducts[$count, $count2, $count3] = $prodInfo.ServerName
+            $script:serverProducts[$count, $count2, $count3] = $prodInfo.ServerName
             foreach ($str in $products) {
                 $count2++
                 $serverProducts[$count, $count2, $count3] = $str
@@ -28,9 +28,9 @@ function o16enumProdVersions{
                         $version = [Microsoft.SharePoint.Utilities.SPHttpUtility]::HtmlEncode($info.BaseVersionOnServer($prodInfo.ServerId).ToString())
                         $serverProducts[$count, $count2, $count3] = $info.DisplayName + " : " + $info.LatestPatchOnServer($prodInfo.ServerId).Version.ToString()
                     }
-                    $serverProducts[$count, $count2, ($global:_maxItemsonServer - 1)] = $count3.ToString()
+                    $serverProducts[$count, $count2, ($script:_maxItemsonServer - 1)] = $count3.ToString()
                 }
-                $serverProducts[$count, ($global:_maxProductsonServer - 1), ($_maxItemsonServer - 1)] = $count2.ToString()
+                $serverProducts[$count, ($script:_maxProductsonServer - 1), ($_maxItemsonServer - 1)] = $count2.ToString()
                 $count3 = 0
             }
             $count--

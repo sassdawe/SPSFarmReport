@@ -4,14 +4,14 @@ function Write-SPSRTimerJob {
     param (
     )
     try {
-        if ($global:timerJobs.Count -eq 0) {
+        if ($script:timerJobs.Count -eq 0) {
             exit
         }
 
-        $global:XMLWriter.WriteStartElement("Timer_Jobs")
+        $script:XMLWriter.WriteStartElement("Timer_Jobs")
 
         #Writing them
-        $global:timerJobs.GetEnumerator() | ForEach-Object {
+        $script:timerJobs.GetEnumerator() | ForEach-Object {
 
             $id = $_.value.Split("||")[0]
             $title = $_.value.Split("||")[2]
@@ -21,18 +21,18 @@ function Write-SPSRTimerJob {
             $isdisabled = $_.value.Split("||")[10]
             $locktype = $_.value.Split("||")[12]
             $null = $id
-            $global:XMLWriter.WriteStartElement("Job")
-            $global:XMLWriter.WriteAttributeString("Id", $_.key)
-            $global:XMLWriter.WriteAttributeString("Title", $title.replace( '"', " ") )
-            $global:XMLWriter.WriteAttributeString("WebApplication", $webapplication)
-            $global:XMLWriter.WriteAttributeString("Schedule", $schedule)
-            $global:XMLWriter.WriteAttributeString("LastRunTime", $lastruntime)
-            $global:XMLWriter.WriteAttributeString("IsDisabled", $isdisabled)
-            $global:XMLWriter.WriteAttributeString("LockType", $locktype)
-            $global:XMLWriter.WriteEndElement()
+            $script:XMLWriter.WriteStartElement("Job")
+            $script:XMLWriter.WriteAttributeString("Id", $_.key)
+            $script:XMLWriter.WriteAttributeString("Title", $title.replace( '"', " ") )
+            $script:XMLWriter.WriteAttributeString("WebApplication", $webapplication)
+            $script:XMLWriter.WriteAttributeString("Schedule", $schedule)
+            $script:XMLWriter.WriteAttributeString("LastRunTime", $lastruntime)
+            $script:XMLWriter.WriteAttributeString("IsDisabled", $isdisabled)
+            $script:XMLWriter.WriteAttributeString("LockType", $locktype)
+            $script:XMLWriter.WriteEndElement()
         }
 
-        $global:XMLWriter.WriteEndElement()
+        $script:XMLWriter.WriteEndElement()
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "

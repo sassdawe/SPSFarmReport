@@ -2,10 +2,10 @@ function o16enumSearchActiveTopologies{
     [cmdletbinding()]
     param ()
     try {
-        if ($global:searchsvcAppsCount -eq 0) { return }
+        if ($script:searchsvcAppsCount -eq 0) { return }
 
-        for ($tempCnt = 0; $tempCnt -lt $global:searchsvcAppsCount ; $tempCnt ++) {
-            $esa = Get-SPEnterpriseSearchServiceApplication -Identity $global:searchServiceAppIds[$tempCnt]
+        for ($tempCnt = 0; $tempCnt -lt $script:searchsvcAppsCount ; $tempCnt ++) {
+            $esa = Get-SPEnterpriseSearchServiceApplication -Identity $script:searchServiceAppIds[$tempCnt]
             $searchServiceAppID = $searchServiceAppIds[$tempCnt]
             $searchSatus = Get-SPEnterpriseSearchStatus -SearchApplication $searchServiceAppID -ErrorAction SilentlyContinue
             $ATComponentNames = $esa.ActiveTopology.GetComponents() | Select-Object Name | ft -HideTableHeaders | Out-String -Width 1000
@@ -22,7 +22,7 @@ function o16enumSearchActiveTopologies{
                 $tempstr3 = [System.String] $tempXML3.Objects.Object.InnerXML
                 $tempstr4 = $searchServiceAppID + "|" + $ATComponentNames[$i]
                 $tempstr = $tempstr + $tempstr2 + $tempstr3
-                $global:SearchActiveTopologyComponents.Add($tempstr4, $tempstr)
+                $script:SearchActiveTopologyComponents.Add($tempstr4, $tempstr)
             }
         }
     }

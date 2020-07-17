@@ -24,8 +24,8 @@ function o16enumSPSearchService {
         }
         $tempXML = "<Property Name = `"AcknowledgementTimeout`">" + $_ato + "</Property>" + "<Property Name =`"ConnectionTimeout`">" + $_cto + "</Property>" + "<Property Name =`"WebProxy`">" + $_wproxy + "</Property>" + "<Property Name =`"UseCrawlProxyForFederation`">" + $_ucpf + "</Property>" + "<Property Name =`"PerformanceLevel`">" + $_pl + "</Property>" + "<Property Name =`"ProcessIdentity`">" + $_pi + "</Property>"
 
-        $global:enterpriseSearchServiceStatus = $tempXML
-        $global:enterpriseSearchServiceJobDefs = $ejob
+        $script:enterpriseSearchServiceStatus = $tempXML
+        $script:enterpriseSearchServiceJobDefs = $ejob
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "

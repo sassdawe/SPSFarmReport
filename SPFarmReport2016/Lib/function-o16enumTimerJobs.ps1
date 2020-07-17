@@ -1,7 +1,7 @@
 function o16enumTimerJobs() {
     try {
         $jobs = Get-SPTimerJob | Select Id, Title, Server, WebApplication, Schedule, LastRunTime, IsDisabled, LockType 
-        $global:timerJobCount = $jobs.Length
+        $script:timerJobCount = $jobs.Length
             
         ForEach ($Job in $jobs) {
             $timerJobId = ($Job | Select Id | ft -HideTableHeaders | Out-String).Trim()
@@ -14,7 +14,7 @@ function o16enumTimerJobs() {
             $locktype = ($Job | Select LockType | ft -HideTableHeaders | Out-String).Trim()
                   
             $tempstr2 = $timerJobId + "||" + $title + "||" + $webapplication + "||" + $schedule + "||" + $lastruntime + "||" + $isdisabled + "||" + $locktype
-            $global:timerJobs.Add($timerJobId, $tempstr2)
+            $script:timerJobs.Add($timerJobId, $tempstr2)
         }           
         return 1
     }
