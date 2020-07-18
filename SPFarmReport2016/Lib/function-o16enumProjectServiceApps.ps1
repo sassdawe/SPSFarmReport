@@ -31,7 +31,7 @@ function o16enumProjectServiceApps{
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumProjectServiceApps", $_)
+        HandleException("o16enumProjectServiceApps", $_)
         return 0
     }
 }

@@ -38,6 +38,6 @@ function Write-SPSRWebApp {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("Write-SPSRWebApp", $_)
+        HandleException("Write-SPSRWebApp", $_)
     }
 }

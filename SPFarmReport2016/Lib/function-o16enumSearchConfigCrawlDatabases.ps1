@@ -18,6 +18,6 @@ function o16enumSearchConfigCrawlDatabases {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumSearchConfigCrawlDatabases", $_)
+        HandleException("o16enumSearchConfigCrawlDatabases", $_)
     }
 }

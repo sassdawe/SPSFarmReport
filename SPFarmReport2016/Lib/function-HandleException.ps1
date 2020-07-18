@@ -1,4 +1,4 @@
-function global:HandleException {
+function HandleException {
     [cmdletbinding()]
     param (
         [string]

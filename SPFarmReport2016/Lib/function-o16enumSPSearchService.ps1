@@ -29,7 +29,7 @@ function o16enumSPSearchService {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumSPSearchServiceApps", $_)
+        HandleException("o16enumSPSearchServiceApps", $_)
         return 0
     }
 }

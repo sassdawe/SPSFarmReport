@@ -46,7 +46,7 @@ function o16enumContentDBs {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumContentDBs", $_)
+        HandleException("o16enumContentDBs", $_)
         return 0
     }
 }

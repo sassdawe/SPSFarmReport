@@ -41,7 +41,7 @@ function o16enumServers {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumServers", $_)
+        HandleException("o16enumServers", $_)
         return 0
     }
 }

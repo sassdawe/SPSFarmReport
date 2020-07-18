@@ -133,7 +133,7 @@ function o16enumWebApps() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumWebApps", $_)
+        HandleException("o16enumWebApps", $_)
         return 0
     }
 }

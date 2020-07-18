@@ -27,7 +27,7 @@ function o16enumSvcApps() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumSvcApps", $_)
+        HandleException("o16enumSvcApps", $_)
         return 0
     }
 }

@@ -17,6 +17,6 @@ function o16WriteInitialXML() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16WriteInitialXML", $_)
+        HandleException("o16WriteInitialXML", $_)
     }
 }

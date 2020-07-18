@@ -60,6 +60,6 @@ function o16writeAAMsnAPs() {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16writeAAMsnAPs", $_)
+        HandleException("o16writeAAMsnAPs", $_)
     }
 }

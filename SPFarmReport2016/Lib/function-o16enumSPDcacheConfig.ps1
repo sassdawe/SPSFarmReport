@@ -31,7 +31,7 @@ function o16enumSPDcacheConfig {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16enumSPDcacheConfig", $_)
+        HandleException("o16enumSPDcacheConfig", $_)
         return 0
     }
 }

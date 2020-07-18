@@ -39,6 +39,6 @@ function o16writeSolutions {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        global:HandleException("o16writeSolutions", $_)
+        HandleException("o16writeSolutions", $_)
     }	
 }

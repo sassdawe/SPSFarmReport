@@ -36,6 +36,6 @@ function Write-SPSRTimerJob {
     }
     catch [System.Exception] {
         Write-Host " ******** Exception caught. Check the log file for more details. ******** "
-        #global:HandleException("o16writeSPServiceApplicationPools", $_)
+        #HandleException("o16writeSPServiceApplicationPools", $_)
     }
 }
