@@ -30,7 +30,7 @@ function o16enumCDConfig {
         return 1
     }
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16CDConfig", $_)
         return 0
     }

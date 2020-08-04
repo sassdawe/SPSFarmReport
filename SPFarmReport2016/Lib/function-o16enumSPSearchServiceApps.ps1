@@ -26,7 +26,7 @@ function o16enumSPSearchServiceApps {
         return 1 | Out-Null
     }
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16enumSPSearchServiceApps", $_)
         return 0
     }

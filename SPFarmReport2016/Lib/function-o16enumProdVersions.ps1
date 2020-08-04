@@ -38,7 +38,7 @@ function o16enumProdVersions{
         return 1
     }
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16enumProdVersions", $_)
         return 0
     }

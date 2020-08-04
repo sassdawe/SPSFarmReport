@@ -28,7 +28,7 @@ function o16enumSPSearchService {
         $script:enterpriseSearchServiceJobDefs = $ejob
     }
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16enumSPSearchServiceApps", $_)
         return 0
     }

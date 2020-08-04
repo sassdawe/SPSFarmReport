@@ -1,4 +1,4 @@
-function o16enumSearchActiveTopologies{
+function o16enumSearchActiveTopologies {
     [cmdletbinding()]
     param ()
     try {
@@ -8,13 +8,13 @@ function o16enumSearchActiveTopologies{
             $esa = Get-SPEnterpriseSearchServiceApplication -Identity $script:searchServiceAppIds[$tempCnt]
             $searchServiceAppID = $searchServiceAppIds[$tempCnt]
             $searchSatus = Get-SPEnterpriseSearchStatus -SearchApplication $searchServiceAppID -ErrorAction SilentlyContinue
-            $ATComponentNames = $esa.ActiveTopology.GetComponents() | Select-Object Name | ft -HideTableHeaders | Out-String -Width 1000
+            $ATComponentNames = $esa.ActiveTopology.GetComponents() | Select-Object Name | Format-Table -HideTableHeaders | Out-String -Width 1000
             $ATComponentNames = $ATComponentNames.Trim().Split("`n")
             for ($i = 0; $i -lt $ATComponentNames.Length ; $i++) {
-                $tempXML = [xml] ($esa.ActiveTopology.GetComponents() | Where-Object {$_.Name -eq $ATComponentNames[$i].Trim() } | ConvertTo-Xml -NoTypeInformation)
+                $tempXML = [xml] ($esa.ActiveTopology.GetComponents() | Where-Object { $_.Name -eq $ATComponentNames[$i].Trim() } | ConvertTo-Xml -NoTypeInformation)
                 if ($null -ne $searchSatus) {
-                    $tempXML2 = [xml] (Get-SPEnterpriseSearchStatus -SearchApplication $searchServiceAppID | ? {$_.Name -eq $ATComponentNames[$i].Trim()} | Select-Object State | ConvertTo-Xml -NoTypeInformation)
-                    $tempXML3 = [xml] (Get-SPEnterpriseSearchStatus -SearchApplication $searchServiceAppID | ? {$_.Name -eq $ATComponentNames[$i].Trim()} | Select-Object Details | ConvertTo-Xml -NoTypeInformation)
+                    $tempXML2 = [xml] (Get-SPEnterpriseSearchStatus -SearchApplication $searchServiceAppID | Where-Object { $_.Name -eq $ATComponentNames[$i].Trim() } | Select-Object State | ConvertTo-Xml -NoTypeInformation)
+                    $tempXML3 = [xml] (Get-SPEnterpriseSearchStatus -SearchApplication $searchServiceAppID | Where-Object { $_.Name -eq $ATComponentNames[$i].Trim() } | Select-Object Details | ConvertTo-Xml -NoTypeInformation)
                 }
 
                 $tempstr = [System.String] $tempXML.Objects.Object.InnerXML
@@ -27,7 +27,7 @@ function o16enumSearchActiveTopologies{
         }
     }
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16enumSearchActiveTopologies", $_)
     }
 }
