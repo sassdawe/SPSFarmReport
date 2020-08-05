@@ -1,9 +1,9 @@
 function o16farmConfig() {
     try {
-            
-        $script:DSN = Get-ItemProperty "hklm:SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\16.0\Secure\configdb" | select dsn | Format-Table -HideTableHeaders | Out-String -Width 1024
+
+        $script:DSN = Get-ItemProperty "hklm:SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\16.0\Secure\configdb" | Select-Object dsn | Format-Table -HideTableHeaders | Out-String -Width 1024
         if (-not $?) {
-            Write-Host You will need to run this program on a server where SharePoint is installed.
+            Write-Information 'You will need to run this program on a server where SharePoint is installed.'
             exit
         }
         $script:DSN = out-string -InputObject $script:DSN
@@ -16,9 +16,9 @@ function o16farmConfig() {
         $script:systemAccount = $mySPFarm.TimerService.ProcessIdentity.Username.ToString()
         [Microsoft.SharePoint.Administration.SPServerCollection] $mySPServerCollection = $mySPFarm.Servers
         [Microsoft.SharePoint.Administration.SPWebApplicationCollection] $mySPAdminWebAppCollection = [Microsoft.SharePoint.Administration.SPWebService]::AdministrationService.WebApplications
-        [Microsoft.SharePoint.Administration.SPTimerService] $spts = $mySPFarm.TimerService   
-                
-        if ($mySPAdminWebAppCollection -ne $null) {
+        [Microsoft.SharePoint.Administration.SPTimerService] $spts = $mySPFarm.TimerService
+
+        if ($null -ne $mySPAdminWebAppCollection) {
             $mySPAdminWebApp = new-object Microsoft.SharePoint.Administration.SPAdministrationWebApplication
             foreach ($mySPAdminWebApp in $mySPAdminWebAppCollection) {
                 if ($mySPAdminWebApp.IsAdministrationWebApplication) {
@@ -39,16 +39,16 @@ function o16farmConfig() {
                 }
             }
         }
-				
-        $productsNum = ((($mySPFarm.Products | ft -HideTableHeaders | Out-String).Trim()).Split("`n")).Count
+
+        $productsNum = ((($mySPFarm.Products | Format-Table -HideTableHeaders | Out-String).Trim()).Split("`n")).Count
         if ($productsNum -eq 1)
         { $script:isFoundationOnlyInstalled = $true }
         return 1
-    } 
-    
+    }
+
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16farmConfig", $_)
         return 0
-    } 
+    }
 }

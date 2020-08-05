@@ -14,8 +14,8 @@ function o16enumWebApps() {
         $script:ContentDBs = New-Object 'System.String[,]' $script:WebAppnum, $script:_maxContentDBs
         $script:WebAppDbID = New-Object 'System.String[,]' $script:WebAppnum, $script:_maxContentDBs
         $script:ContentDBSitesNum = New-Object 'System.String[,]' $script:WebAppnum, $script:_maxContentDBs
-		
-        if ($mySPWebAppCollection -ne $null) {
+
+        if ($null -ne $mySPWebAppCollection) {
             foreach ($mySPWebApp in $mySPWebAppCollection) {
                 $mySiteCollectionNum = 0
                 $script:WebAppDetails[$count, 0] = $count.ToString()
@@ -32,12 +32,12 @@ function o16enumWebApps() {
                 else
                 { $script:WebAppDetails[$count, 9] = $mySPWebApp.ServiceApplicationProxyGroup.Name }
                 $script:ContentDBcount = $mySPWebApp.ContentDatabases.Count
-                $script:totalContentDBCount = $script:totalContentDBCount + $mySPWebApp.ContentDatabases.Count				
-				
-                $AllZones = [Microsoft.SharePoint.Administration.SPUrlZone]::Default, 
-                [Microsoft.SharePoint.Administration.SPUrlZone]::Intranet, 
-                [Microsoft.SharePoint.Administration.SPUrlZone]::Internet, 
-                [Microsoft.SharePoint.Administration.SPUrlZone]::Custom, 
+                $script:totalContentDBCount = $script:totalContentDBCount + $mySPWebApp.ContentDatabases.Count
+
+                $AllZones = [Microsoft.SharePoint.Administration.SPUrlZone]::Default,
+                [Microsoft.SharePoint.Administration.SPUrlZone]::Intranet,
+                [Microsoft.SharePoint.Administration.SPUrlZone]::Internet,
+                [Microsoft.SharePoint.Administration.SPUrlZone]::Custom,
                 [Microsoft.SharePoint.Administration.SPUrlZone]::Extranet
                 foreach ($CurrentZone in $AllZones) {
                     switch ($CurrentZone) {
@@ -78,61 +78,61 @@ function o16enumWebApps() {
                         $script:WebAppAuthProviders[$count, $count2] = $script:WebAppAuthProviders[$count, $count2] + " ] " + $mySPWebApp.IisSettings[$CurrentZone].Path.FullName
 
                         $script:WebAppAuthProviders[$count, $count2] = $script:WebAppAuthProviders[$count, $count2] + " ] " + $mySPWebApp.IisSettings[$CurrentZone].UseClaimsAuthentication.ToString()
-                    }		
+                    }
                 }
-				
+
                 #finding out the content dbs for the web app
                 [Microsoft.SharePoint.Administration.SPContentDatabaseCollection] $mySPContentDBCollection = $mySPWebApp.ContentDatabases
                 foreach ($mySPContentDB in $mySPContentDBCollection) {
                     $script:ContentDBcount--;
                     $script:ContentDBs[$count, $script:ContentDBcount] = $mySPContentDB.Name
                     $mySiteCollectionNum = $mySiteCollectionNum + $mySPContentDB.Sites.Count
-                    $ContentDBSitesNum[$count, $ContentDBcount] = $mySPContentDB.Sites.Count.ToString()					
+                    $ContentDBSitesNum[$count, $ContentDBcount] = $mySPContentDB.Sites.Count.ToString()
                 }
                 $script:WebAppDetails[$count, 4] = $mySiteCollectionNum.ToString()
-				
+
                 #enumerating alternateURLs
                 foreach ($mySPAlternateUrl in $mySPWebApp.AlternateUrls) {
                     switch ($mySPAlternateUrl.UrlZone.ToString().Trim()) {
                         "Default" {
-                            if ($script:WebAppPublicAAM[$count, 1] -eq $null)
+                            if ($null -eq $script:WebAppPublicAAM[$count, 1])
                             { $script:WebAppPublicAAM[$count, 1] = $mySPAlternateUrl.IncomingUrl.ToString() }
                             else
                             { $script:WebAppInternalAAMURL[$count, 1] = $mySPAlternateUrl.IncomingUrl.ToString() }
                         }
                         "Intranet" {
-                            if ($script:WebAppPublicAAM[$count, 2] -eq $null)
+                            if ($null -eq $script:WebAppPublicAAM[$count, 2])
                             { $script:WebAppPublicAAM[$count, 2] = $mySPAlternateUrl.IncomingUrl.ToString() }
                             else
                             { $script:WebAppInternalAAMURL[$count, 2] = $mySPAlternateUrl.IncomingUrl.ToString() }
                         }
                         "Internet" {
-                            if ($script:WebAppPublicAAM[$count, 3] -eq $null)
+                            if ($null -eq $script:WebAppPublicAAM[$count, 3])
                             { $script:WebAppPublicAAM[$count, 3] = $mySPAlternateUrl.IncomingUrl.ToString() }
                             else
                             { $script:WebAppInternalAAMURL[$count, 3] = $mySPAlternateUrl.IncomingUrl.ToString() }
                         }
                         "Custom" {
-                            if ($script:WebAppPublicAAM[$count, 4] -eq $null)
+                            if ($null -eq $script:WebAppPublicAAM[$count, 4])
                             { $script:WebAppPublicAAM[$count, 4] = $mySPAlternateUrl.IncomingUrl.ToString() }
                             else
                             { $script:WebAppInternalAAMURL[$count, 4] = $mySPAlternateUrl.IncomingUrl.ToString() }
                         }
                         "Extranet" {
-                            if ($script:WebAppPublicAAM[$count, 5] -eq $null)
+                            if ($null -eq $script:WebAppPublicAAM[$count, 5])
                             { $script:WebAppPublicAAM[$count, 5] = $mySPAlternateUrl.IncomingUrl.ToString() }
                             else
                             { $script:WebAppInternalAAMURL[$count, 5] = $mySPAlternateUrl.IncomingUrl.ToString() }
                         }
                     }
-                }					
+                }
                 $count++
             }
         }
         return 1
     }
     catch [System.Exception] {
-        Write-Host " ******** Exception caught. Check the log file for more details. ******** "
+        Write-Information " ******** Exception caught. Check the log file for more details. ******** "
         HandleException("o16enumWebApps", $_)
         return 0
     }

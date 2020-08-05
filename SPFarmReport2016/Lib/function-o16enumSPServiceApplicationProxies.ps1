@@ -11,7 +11,7 @@ function o16enumSPServiceApplicationProxies() {
             $script:XMLToParse = [xml](Get-SPServiceApplicationProxy | Where-Object { $_.Id -eq $ServiceAppProxyID } | ConvertTo-XML -NoTypeInformation)
 
             $typeName = $script:XMLToParse.Objects.Object.Property | Where-Object { $_.Name -eq "TypeName" }
-            if ($typeName -eq $null) {
+            if ($null -eq $typeName) {
                 $tempstr = ($script:XMLToParse.Objects.Object.Property | Where-Object { $_.Name -eq "Name" }).InnerText
             }
             else {
